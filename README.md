@@ -38,6 +38,12 @@ greater than zero and less than 1.
    5. Press "Apply".
 
 
+
+#### Contributions
+The segmentation code was developed by 
+Paul Hernandez Herrera and the centerline 
+generation code was developed by David Jiménez.
+
 #### Data
 Thanks to Sajo M and  Morishita H, Department 
 of Psychiatry, Department of Neuroscience, 
