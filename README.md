@@ -5,7 +5,7 @@ This code segments, detects and extracts
 
 ## Usage
 Clone or downlaod the repository and run
-_AutomatedSpineExtractionModule.m_to get
+ _AutomatedSpineExtractionModule.m_ to get
  the segmented image, centerline of the 
  image, detected endpoints, roughly extracted
  spines and spine count.
