@@ -5,7 +5,7 @@ function centerLineFile=CenterLinefromSWCtoRAWnMHD_demo(filepath,fileseg)
 V = RAWfromMHD(fileseg,[],filepath);
 
 %swcfile=strcat(filepath,fileseg,'_CL.swc');
-swcfile=strcat(filepath,fileseg,'_CL_Branch.swc');
+swcfile = [filepath,filesep, fileseg,'_CL_Branch.swc'];
 
 
 % fpath='C:\Users\pankaj singh\Desktop\Read\MatlabExp\TaraKeck\Stack1\Common\Log_Common\';

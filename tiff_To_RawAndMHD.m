@@ -14,7 +14,7 @@ for k = 1:num_images
 end
 image=cat(3,A{:}); % putting them together to get a 3D image
 
-a=strcat('Sajo_',filename);
+a=strcat('RAW_',filename);
 RawAndMHD=a(1:end-4);
 WriteRAWandMHD(image,RawAndMHD,filepath);
 

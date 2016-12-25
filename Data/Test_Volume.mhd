@@ -1,0 +1,8 @@
+ObjectType = Image
+NDims = 3
+BinaryData = True
+BinaryDataByteOrderMSB = False
+ElementSpacing =  1.0000  1.0000   1.0000 
+DimSize = 201 201 57
+ElementType = MET_UCHAR
+ElementDataFile = Test_Volume.raw

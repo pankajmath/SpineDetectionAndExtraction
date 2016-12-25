@@ -179,7 +179,7 @@ W=uint8(W);
 nnz(V)
 nnz(W)
 nnz(V1)
-WriteRAWandMHD(uint8(W),strcat(fSeg,'_ExtractedSpines'),filepath)
+WriteRAWandMHD(uint8(W),strcat(fSeg,'_ExtractedSpines_', 'bl_', num2str(branchLen), 'rad_', num2str(radius)),filepath)
 
 
 % 

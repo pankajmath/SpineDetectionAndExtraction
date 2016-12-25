@@ -2,20 +2,39 @@ tic;
 addDirAndSubDirHavingThisFunction()
 
 filepath= [pwd, filesep, 'Data'];
+%filepath = 'C:\Users\pankaj\Desktop\SpineDetExt\Data';
 
 filename='Test_Volume.tif'; %filename is the .tif or .raw file in the directory
 
 RawAndMHD = 'Test_Volume';
 blobSize2Remove=100;
 
-abc=0;
-writetiff=0;
+
+
+p.sigma_pre = 2.0;
+p.sigma = 2.0;      
+p.GUI = false;
+p.delete_files = false;
+p.bins=400;         % number of bins in the histogram calculation
+p.threshold = .8; % threshold used in segmentation
+%p.min_c  = 15^3;
+%p = settingDefaultParameters(p,filepath);
+
+branchLen=15; % centerline branches smaller than this length will not be
+              %considered when extracting the spines
+radius=18;     % the maximum radius of the sphere we 
+               %consider from the centerline
+numVoxSmallSpine =10; % the minimum number of voxels in a spine
+
+
+abc=0; % if input image needs to be converted from .tif needs to .raw and .mhd
+writetiff=0; % if output files need to be written in .tif format
 if abc
 %% Converting tif to raw and mhd
 RawAndMHD=tiff_To_RawAndMHD(filepath,filename);
 end
 %% Segmentation of raw 3D image; Removing small blobs
-spine_FileName=runSegmentationSpinesDemo(filepath,RawAndMHD);
+spine_FileName=runSegmentationSpinesDemo(filepath,RawAndMHD, p);
 
 segmentedImage=RAWfromMHD(spine_FileName,[],filepath);
 
@@ -43,15 +62,16 @@ detectedEndpts=endPointsDetectionDemo(filepath,RawAndMHD,editedSeg,sigma);
 
 
 %% Spine Extraction
-branchLen=15;
-radius=15;
 SpineExtraction_from_SegmentedVolume_Demo(filepath,editedSeg,detectedEndpts,...
                                             strcat(editedSeg,'_CL_Branch.swc'),...
                                             centerLineFile,branchLen,radius);
                                         
-Spines=RAWfromMHD(strcat(editedSeg,'_ExtractedSpines'),[],filepath);
+nameExtracted = strcat(editedSeg,'_ExtractedSpines_','bl_', num2str(branchLen), 'rad_', num2str(radius));               
+                                        
+Spines=RAWfromMHD(nameExtracted,[],filepath);
 cc=bwconncomp(Spines);
-numberofSpines=cc.NumObjects
+sprintf('The total number of spines is %d.', cc.NumObjects)
+
 if writetiff
     for K=1:length(Spines(1,1,:))
         imwrite(Spines(:,:,K)',strcat(editedSeg,'_ExtractedSpines','.tif'),'WriteMode','append', 'Compression', 'none')
@@ -60,22 +80,19 @@ if writetiff
 end
 
 %% Removing small spines (less than 10 voxels in volume)
-editedSpines=remove_small_conComp3D(Spines,10);
+editedSpines=remove_small_conComp3D(Spines,numVoxSmallSpine);
 dd=bwconncomp(editedSpines);
-numberofSpines=dd.NumObjects
-spineCords = zeros(numberofSpines, 3);
-for i = 1 : dd.NumObjects
-[alpha, beta, gamma] =ind2sub(size(editedSpines), dd.PixelIdxList{i});
-spineCords(i,:) = round([mean(alpha), mean(beta), mean(gamma)]);
-end
+sprintf('The number of spines (after removing small ones) is %d.', dd.NumObjects)
+nameExtractedEdited = strcat(nameExtracted, 'Edited_','bl_', num2str(branchLen), 'rad_', num2str(radius),'minVox_', num2str(numVoxSmallSpine));
+WriteRAWandMHD(editedSpines, nameExtractedEdited, filepath)
+
+
+% spineCords = zeros(numberofSpines, 3);
+% for i = 1 : dd.NumObjects
+% [alpha, beta, gamma] =ind2sub(size(editedSpines), dd.PixelIdxList{i});
+% spineCords(i,:) = round([mean(alpha), mean(beta), mean(gamma)]);
+% end
 % csvwrite([filepath, filesep, 'Spine_Coordinates.csv'], spineCords);
-WriteRAWandMHD(editedSpines, 'EditedSpineExtraction', filepath)
-
-
-
-
-
-
 
 
 % Centroid = zeros(size(editedSpines));

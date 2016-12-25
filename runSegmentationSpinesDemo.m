@@ -1,4 +1,4 @@
-function spine_FileName=runSegmentationSpinesDemo(filepath,RawAndMHD)
+function spine_FileName=runSegmentationSpinesDemo(filepath,RawAndMHD, p)
 %this function allows to obtain the segmentation for tubular structures. Nota that, we are using the ordering of the eigenvalues proposed by SATO. If we want to use FRANGI's sorting, we have to modify the file computeFeatures.m
 
 
@@ -22,40 +22,28 @@ function spine_FileName=runSegmentationSpinesDemo(filepath,RawAndMHD)
 
 close all
 clc
+p = settingDefaultParameters(p,filepath);
 
 fpath = filepath;
 %fpath='C:\Users\pankaj singh\Desktop\Read\MatlabExp\TaraKeck\Stack2\';
 %fpath='C:\Users\pankaj singh\Desktop\Read\MatlabExp\TaraKeck\Stack3\Stack_3_Time_11';
 %fname = {'Tara_Stack_2_E8_R1_T8', 'CubeRoot_time_08', 'FourthRoot_time_08','Log_time_08', 'Squareroot_time_08'};
 fname={RawAndMHD};
-sigma_pre = 2.0;
-sigma = 2.0;
 
-% sigma_pre = 2.0;
-% sigma = 2.0;
-p.GUI = false;
-p.delete_files = false;
-%p.bins =1000;
-%p.bins =500;
-p.bins=500;
-p.threshold = .8;
 
-% p.min_c  = 30;
-%p.min_c  = 15^3;
-
-total_time = 0;
+%total_time = 0;
 for i=1:length(fname)
-    for s=1:length(sigma)
-        tic;
-        p.sigma = sigma(s);
-        p.sigma_pre = sigma_pre;
+%     for s=1:length(sigma)
+%         tic;
+%         p.sigma = sigma(s);
+%         p.sigma_pre = sigma_pre;
         %running spines segmentation
         spine_FileName=ORION3_Spines(fpath,fname{i},p);
-        t = toc;
-        computeElapsedTime(t,'Spines ');
-        total_time = total_time + t;
-        computeElapsedTime(total_time,'Spines ');
-    end
+%         t = toc;
+%         computeElapsedTime(t,'Spines ');
+%         total_time = total_time + t;
+%         computeElapsedTime(total_time,'Spines ');
+%     end
 end
 end
 

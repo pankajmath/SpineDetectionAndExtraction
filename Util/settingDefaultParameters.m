@@ -6,6 +6,16 @@ if ~isfield(p,'threshold')
     p.threshold = 0.5;
 end
 
+%just in case the user wants to use a specific value of sigma
+if ~isfield(p,'sigma')
+    p.sigma = 2.0;
+end
+
+%just in case the user wants to use a specific value of sigma_pre
+if ~isfield(p,'sigma_pre')
+    p.sigma_pre = 2.0;
+end
+
 %just in case the user wants to use a specific value for minimum number of
 %components
 if ~isfield(p,'min_c')

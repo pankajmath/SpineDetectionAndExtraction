@@ -1,3 +1,9 @@
+% Copyright © 2011 Computational Biomedicine Lab (CBL), 
+% University of Houston. All rights reserved.
+% 
+% Redistribution and use in source and binary forms, with or without
+% modification, is prohibited without the prior written consent of CBL.
+
 function currentPath = isWinORUnixPathWithFile(path,fName)
 
    % If pwd is empty return fName as the path
