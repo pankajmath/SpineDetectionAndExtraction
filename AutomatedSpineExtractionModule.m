@@ -34,13 +34,6 @@ spine_FileName=runSegmentationSpinesDemo(filepath,RawAndMHD, p);
 segmentedImage=RAWfromMHD(spine_FileName,[],filepath);
 
 newSegmentedImage=remove_small_conComp3D(segmentedImage,blobSize2Remove);
-if writetiff
-    
-    for K=1:length(newSegmentedImage(1,1,:))
-        imwrite(logical(newSegmentedImage(:,:,K)'),strcat(spine_FileName,'_Edited_', num2str(blobSize2Remove),'.tif'),'WriteMode','append', 'Compression', 'none');
-    end
-end
-
 
 WriteRAWandMHD(newSegmentedImage,strcat(spine_FileName,'_Edited_', num2str(blobSize2Remove)),filepath);
 
