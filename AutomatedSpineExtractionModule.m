@@ -1,16 +1,14 @@
 tic;
-addDirAndSubDirHavingThisFunction()
+addDirAndSubDirHavingThisFunction() % adds current directory and subdirectories to path
 
-filepath= [pwd, filesep, 'Data'];
-%filepath = 'C:\Users\pankaj\Desktop\SpineDetExt\Data';
+filepath= [pwd, filesep, 'Data']; % assumes that the 3d image is in subdirectory 'Data'
 
-filename='Test_Volume.tif'; %filename is the .tif or .raw file in the directory
-
-RawAndMHD = 'Test_Volume';
+filename='Test_Volume.tif'; %name of the .tif image
+tif2raw=1; % if input image needs to be converted from .tif to .raw and .mhd
+RawAndMHD = 'Test_Volume'; % name of the .raw and/or .mhd file, if already available
 blobSize2Remove=100;
 
-
-
+%some parameter setting
 p.sigma_pre = 2.0;
 p.sigma = 2.0;      
 p.GUI = false;
@@ -26,10 +24,7 @@ radius=18;     % the maximum radius of the sphere we
                %consider from the centerline
 numVoxSmallSpine =10; % the minimum number of voxels in a spine
 
-
-abc=0; % if input image needs to be converted from .tif needs to .raw and .mhd
-writetiff=0; % if output files need to be written in .tif format
-if abc
+if tif2raw
 %% Converting tif to raw and mhd
 RawAndMHD=tiff_To_RawAndMHD(filepath,filename);
 end
@@ -57,7 +52,7 @@ traceScript_BranchinfoDemo(filepath,editedSeg);
 centerLineFile=CenterLinefromSWCtoRAWnMHD_demo(filepath,editedSeg);
 
 %% Detecting EndPoints(terminal points)
-sigma=2;
+sigma=p.sigma;
 detectedEndpts=endPointsDetectionDemo(filepath,RawAndMHD,editedSeg,sigma);
 
 
@@ -72,37 +67,12 @@ Spines=RAWfromMHD(nameExtracted,[],filepath);
 cc=bwconncomp(Spines);
 sprintf('The total number of spines is %d.', cc.NumObjects)
 
-if writetiff
-    for K=1:length(Spines(1,1,:))
-        imwrite(Spines(:,:,K)',strcat(editedSeg,'_ExtractedSpines','.tif'),'WriteMode','append', 'Compression', 'none')
-    end
-    
-end
-
 %% Removing small spines (less than 10 voxels in volume)
 editedSpines=remove_small_conComp3D(Spines,numVoxSmallSpine);
 dd=bwconncomp(editedSpines);
 sprintf('The number of spines (after removing small ones) is %d.', dd.NumObjects)
 nameExtractedEdited = strcat(nameExtracted, 'Edited_','bl_', num2str(branchLen), 'rad_', num2str(radius),'minVox_', num2str(numVoxSmallSpine));
 WriteRAWandMHD(editedSpines, nameExtractedEdited, filepath)
-
-
-% spineCords = zeros(numberofSpines, 3);
-% for i = 1 : dd.NumObjects
-% [alpha, beta, gamma] =ind2sub(size(editedSpines), dd.PixelIdxList{i});
-% spineCords(i,:) = round([mean(alpha), mean(beta), mean(gamma)]);
-% end
-% csvwrite([filepath, filesep, 'Spine_Coordinates.csv'], spineCords);
-
-
-% Centroid = zeros(size(editedSpines));
-% for j = 1: numberofSpines
-% Centroid(spineCords(j,1), spineCords(j,2), spineCords(j,3)) =1;
-% end
-
-
-                        
-                                        
 
 toc;
                                         
