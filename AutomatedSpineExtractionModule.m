@@ -52,7 +52,7 @@ traceScript_BranchinfoDemo(filepath,editedSeg);
 centerLineFile=CenterLinefromSWCtoRAWnMHD_demo(filepath,editedSeg);
 
 %% Detecting EndPoints(terminal points)
-sigma=p.sigma;
+sigma=2;
 detectedEndpts=endPointsDetectionDemo(filepath,RawAndMHD,editedSeg,sigma);
 
 
