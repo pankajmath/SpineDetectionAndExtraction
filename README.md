@@ -10,6 +10,10 @@ Clone or downlaod the repository and run
  image, detected endpoints, roughly extracted
  spines and spine count.
  
+ ## Reference
+ If you use our code for research, please cite our paper
+ [P. K. Singh, P. Hernandez-Herrera, D. Labate, M. Papadakis, Automated 3-D Detection of Dendritic Spines from In Vivo Two-Photon Image Stacks, Neuroinformatics (2017)](https://link.springer.com/article/10.1007/s12021-017-9332-2). https://doi.org/10.1007/s12021-017-9332-2
+ 
 ## Visualization
 Download and install ParaView
 [ParaView](http://www.paraview.org/download/). 
